@@ -7,7 +7,7 @@ mysql.createPool({
     connectionLimit: 3,
     host: 'localhost',
     user: 'root',
-    password: '0865663393',
+    password: '',
     database: 'PPit'
 })
     .then((result) => {
@@ -212,6 +212,145 @@ var updateEmp = function(Empno, name, lname, job, hiredate, salary) {
     })
 }
 
+//add booking function
+var addBook = function(bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo){
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "INSERT INTO booking VALUES(?, ?, ?, ?, ?, ?, ?)",
+            values: [bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
+
+//check if booking number is in used
+var isBookingNoInUse = function(bookingNo){
+    return new Promise((resolve,reject)=>{
+        pool.query('select COUNT(*) AS total FROM booking WHERE bookingNo = ?',
+        [bookingNo], function(error, result, fields){
+            if(!error){
+                console.log("Booking Code COUNT : "+result[0].total);
+                return resolve(result[0].total > 0);
+            } else {
+                return reject(new Error('Database error!!'));
+            }
+        });
+    })
+}
+
+//function to update Booking details
+var updateBook = function(bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo) {
+    return new Promise((resolve, reject) =>{
+        var myQuery = {
+            sql: 'UPDATE booking SET bookingDate=?, name=?, quantity=?, bookedBy=?, phone=?, tableNo=? WHERE bookingNo=?',
+            values:[bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
+
+//delete booking fucntion
+var deleteBook = function(bookingNo) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: 'delete from booking where bookingNo = ?',
+            values: [bookingNo]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
+
+//add supplier function
+var addSup = function(sid, sname, product, dday, phoneNo){
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "INSERT INTO supplier VALUES(?, ?, ?, ?, ?)",
+            values: [sid, sname, product, dday, phoneNo]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
+
+//check if supplier number is in used
+var isSidInUse = function(sid){
+    return new Promise((resolve,reject)=>{
+        pool.query('select COUNT(*) AS total FROM supplier WHERE sid = ?',
+        [sid], function(error, result, fields){
+            if(!error){
+                console.log("Booking Code COUNT : "+result[0].total);
+                return resolve(result[0].total > 0);
+            } else {
+                return reject(new Error('Database error!!'));
+            }
+        });
+    })
+}
+
+//function to update Supplier details
+var updateSup = function(sid, sname, product, dday, phoneNo) {
+    return new Promise((resolve, reject) =>{
+        var myQuery = {
+            sql: 'UPDATE supplier SET sname=?, product=?, dday=?, phoneNo=? WHERE sid=?',
+            values:[sid, sname, product, dday, phoneNo]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
+
+//delete supplier fucntion
+var deleteSup = function(sid) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: 'delete from supplier where sid = ?',
+            values: [sid]
+        }
+        pool.query(myQuery)
+        .then((result) => {
+            resolve(result)
+
+        })
+        .catch((error) =>{
+            reject(error)
+        })
+    })
+}
 
 //export
-module.exports = {getFood ,getEmp, getSup, getBook, addFood,isFidInUse, updateFood, deleteFood, addEmp, isEmpnoInUse, deleteEmp, updateEmp}
+module.exports = {getFood ,getEmp, getSup, getBook, addFood,isFidInUse, updateFood,
+     deleteFood, addEmp, isEmpnoInUse, deleteEmp, updateEmp, addBook, isBookingNoInUse, 
+     updateBook, deleteBook, addSup, isSidInUse, updateSup, deleteSup}

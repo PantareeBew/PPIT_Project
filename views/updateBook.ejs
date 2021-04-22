@@ -1,0 +1,57 @@
+<style>
+    textarea {
+        width: 400px;
+        height: 150px;
+    }
+
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Edit Employee Details</h1>
+
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+    <% } %>
+    <!--bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo-->
+        <form action="/updateBook/<%=bookingNo%>" method="POST">
+            <label>Booking Number: </label>
+            <input type="number" name="bookingNo" value="<%=bookingNo%>"><br><br>
+            <label>Date: </label> <!-- need to input value in everytime of updating-->
+            <input type="date" name="bookingDate" value="<%=bookingDate%>"><br><br>
+            <label>Customer Name: </label>
+            <input type="text" name="name" value="<%=name%>"><br><br>
+            <label>Quantity: </label>
+            <input type="text" name="quantity" value="<%=quantity%>"><br><br>
+        <!--<select name="bookedBy">
+                <option value="Email">Email</option>
+                <option value="Phone">Phone</option>
+            </select><br><br>--> 
+
+            <label>Booked By: </label> 
+            <input type="text" name="bookedBy" value="<%=bookedBy%>"><br><br>
+            <label>Phone: </label>
+            <input type="number" name="phone" value="<%=phone%>"><br><br>
+            <label>tableNo: </label>
+            <input type="number" name="tableNo" value="<%=tableNo%>"><br><br>
+            <input type="submit" value="Update">
+            
+        </form> 
+        <br><br>
+    <a href="/" class="button">HOME</a> </button>
+    <a href="/booking" class = "button">BOOKING</a> </button><br><br>
+    
+
+
+</body>

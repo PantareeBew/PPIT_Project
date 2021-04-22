@@ -1,0 +1,50 @@
+<html>
+<style>
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Add Booking</h1>
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form action="/addBook" method="POST">
+                <label>Booking Number: </label>
+                <input type="number" name="bookingNo"><br><br>
+                <label>Date: </label>
+                <input type="date" name="bookingDate"><br><br>
+                <label>Name: </label>
+                <input type="text" name="name"><br><br>
+                <label>Quantity: </label>
+                <input type="number" name="quantity"><br><br>
+                <label>Booked By: </label>
+                <select name="bookedBy">
+                    <option value="Email">Email</option>
+                    <option value="Phone">Phone</option>
+                </select><br><br>
+                <label>Phone: </label>
+                <input type="number" name="phone"><br><br>
+                <label>Table Number: </label>
+                <input type="number" name="tableNo"><br><br>
+                <input type="submit" value="Add">
+
+            </form>
+
+            <br><br>
+            <a href="/" class="button">HOME</a> </button>
+            <a href="/booking" class="button">Booking</a> </button>
+</body>
+
+</html>

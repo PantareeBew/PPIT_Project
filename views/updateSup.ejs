@@ -1,0 +1,48 @@
+<style>
+    textarea {
+        width: 500px;
+        height: 150px;
+    }
+
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Edit Supplier Details</h1>
+
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+    <% } %>
+        <!--sid, sname, product, dday, phoneNo-->
+        <form action="/updateSup/<%=sid%>" method="POST">
+            <label>Supplier Code: </label>
+            <input type="number" name="sid" value="<%=sid%>"><br><br>
+            <label>Name: </label>
+            <input type="text" name="sname" value="<%=sname%>"><br><br>
+            <label>Product: </label>
+            <textarea name="product"><%=product%></textarea><br><br>
+            <label>Delivery Day: </label>
+            <input type="text" name="dday" value="<%=dday%>"><br><br>
+            <label>Phone Number: </label>
+            <input type="number" name="phoneNo" value="<%=phoneNo%>"><br><br>
+            <input type="submit" value="Update">
+            
+        </form> 
+        <br><br>
+    <a href="/" class="button">HOME</a> </button>
+    <a href="/food" class = "button">FOOD</a> </button><br><br>
+    
+
+
+</body>

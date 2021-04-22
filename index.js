@@ -84,7 +84,6 @@ app.post('/addFood',
                 }
             })
     ],
-    //,fid:req.body.fid, fname: req.body.fname, ingredient: req.body.ingredient, method: req.body.method
     (req, res) => {
         var errors = validationResult(req)
         //error in add food page
@@ -100,8 +99,6 @@ app.post('/addFood',
                 })
                 .catch((error) => {
                     res.send(error)
-                    //console.log("Error in adding Food page")
-                    //console.log(error)
                 })
         }
     })
@@ -155,13 +152,7 @@ app.get('/deleteFood/:foodId', (req, res) => {
             return res.redirect('/food')
         })
         .catch((error) => {
-
-            /*     if (error.code == "ER_ROW_IS_REFERENCED_2") {
-                     res.send("<h3>ERROR: " + error.errno + " cannot delete food with code: " + req.params.foodId + " as it has associated city table</h3> <br><br><p> <a href='http://localhost:5000' >HOME</a> </button><p>")
-                 } else {*/
             res.send("<h3>ERROR: " + error.errno + " " + error.sqlMessage + "</h3>")
-            //  }
-            //  res.send(error)
             console.log('Error in deleting food data')
         })
 })
@@ -169,7 +160,6 @@ app.get('/deleteFood/:foodId', (req, res) => {
 //get addEmployee
 app.get('/addEmp', (req, res) => {
     res.render("addEmp", { errors: undefined, Empno: req.body.Empno, name: req.body.name, lname: req.body.lname, job: req.body.job, hiredate: req.body.hiredate, salary: req.body.salary })
-    //, Empno: req.body.Empno, name: req.body.name, lname: req.body.lname, job:req.body.job, hiredate:req.body.hiredate, salary:req.body.salary 
 })
 
 //post addEmployee page
@@ -198,12 +188,11 @@ app.post('/addEmp',
     //,fid:req.body.fid, fname: req.body.fname, ingredient: req.body.ingredient, method: req.body.method
     (req, res) => {
         var errors = validationResult(req)
-        //error in add food page
+        //error in add employee page
         if (!errors.isEmpty()) {
             res.render("addEmp", { errors: errors.errors })
             //console.log(error)
             console.log("Error in adding new employee details")
-            //console.log(error)
         }
         else {
             mysqlDAO.addEmp(req.body.Empno, req.body.name, req.body.lname, req.body.job, req.body.hiredate, req.body.salary)
@@ -225,13 +214,7 @@ app.get('/deleteEmp/:empId', (req, res) => {
             return res.redirect('/employee')
         })
         .catch((error) => {
-
-            /*     if (error.code == "ER_ROW_IS_REFERENCED_2") {
-                     res.send("<h3>ERROR: " + error.errno + " cannot delete food with code: " + req.params.foodId + " as it has associated city table</h3> <br><br><p> <a href='http://localhost:5000' >HOME</a> </button><p>")
-                 } else {*/
             res.send("<h3>ERROR: " + error.errno + " " + error.sqlMessage + "</h3>")
-            //  }
-            //  res.send(error)
             console.log('Error in deleting employee data')
         })
 })
@@ -242,8 +225,8 @@ app.get('/updateEmp/:Empno', (req, res) => {
     mysqlDAO.getEmp()
         .then((result) => {
             result.forEach(employees => {
-                if (code == employees.Empno) {           //Empno: req.body.Empno, name: req.body.name, lname: req.body.lname, job: req.body.job, hiredate: req.body.hiredate, salary: req.body.salary 
-                    res.render('updateEmp', { errors: undefined, Empno: code, name: employees.name, lname: employees.lname, job: employees.job, hiredate: employees.hiredate,  salary: employees.salary})
+                if (code == employees.Empno) {           
+                    res.render('updateEmp', { errors: undefined, Empno: code, name: employees.name, lname: employees.lname, job: employees.job, hiredate: employees.hiredate, salary: employees.salary })
                 }
             })
         })
@@ -266,7 +249,7 @@ app.post('/updateEmp/:Empno',
         if (!errors.isEmpty()) {
             res.render('updateEmp', { errors: errors.errors, Empno: req.body.Empno, name: req.body.name, lname: req.body.lname, job: req.body.job, hiredate: req.body.hiredate, salary: req.body.salary })
         } else {
-            mysqlDAO.updateEmp( req.body.name, req.body.lname, req.body.job, req.body.hiredate, req.body.salary, req.body.Empno)
+            mysqlDAO.updateEmp(req.body.name, req.body.lname, req.body.job, req.body.hiredate, req.body.salary, req.body.Empno)
                 .then((result) => {
                     return res.redirect('/employee')
                 })
@@ -278,10 +261,231 @@ app.post('/updateEmp/:Empno',
         }
     })
 
+//get add Booking
+app.get('/addBook', (req, res) => {
+    res.render("addBook", { errors: undefined, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy,  phone: req.body.phone, tableNo: req.body.tableNo})
+})
+
+//post add Booking page
+app.post('/addBook',
+    [
+        //check bookingNo input length
+        check('bookingNo').isLength({ min: 1, max: 3 }).withMessage("Booking Number must not exceed 3 characters or less than 1 character"),
+        //check bookingDate if input 
+        check('bookingDate').notEmpty().withMessage("Please enter Booking Date"),
+        //check name if input 
+        check('name').isLength({ min: 1 }).withMessage("Please enter Name"),
+        //check quantity if input 
+        check('quantity').isLength({ min: 1 }).withMessage("Please enter quantity of people"),
+         //check bookedBy if input 
+         check('bookedBy').isLength({ min: 1 }).withMessage("Please choose way of booking"),
+         //check phone if input 
+         check('phone').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
+         //check tableNo if input 
+         check('tableNo').isLength({ min: 1, max: 3 }).withMessage("Please enter table number number"),
+        //check id if exist
+        check('bookingNo')
+            .exists()
+            .custom(async bookingNo => {
+                const value = await mysqlDAO.isBookingNoInUse(bookingNo);
+                if (value) {
+                    throw new Error('Error: Booking Number' + bookingNo + ' is already exist')
+                }
+            })
+    ],
+    (req, res) => {
+        var errors = validationResult(req)
+        //error in add book page
+        if (!errors.isEmpty()) {
+            res.render("addBook", { errors: errors.errors })
+            console.log("Error in adding new Booking details")
+          //  console.log(error)
+        }
+        else {
+            mysqlDAO.addBook(req.body.bookingNo, req.body.bookingDate, req.body.name, req.body.quantity, req.body.bookedBy, req.body.phone, req.body.tableNo)
+                .then((result) => {
+                    return res.redirect('/booking')
+                })
+                .catch((error) => {
+                    res.send(error)
+                })
+        }
+    })
+
+
+//delete booking data by selected id
+app.get('/deleteBook/:bookingNo', (req, res) => {
+    mysqlDAO.deleteBook(req.params.bookingNo)
+        .then((result) => {
+            return res.redirect('/booking')
+        })
+        .catch((error) => {
+            res.send("<h3>ERROR: " + error.errno + " " + error.sqlMessage + "</h3>")
+            console.log('Error in deleting booking data')
+        })
+})
+
+//GET to updating booking details page
+app.get('/updateBook/:bookingNo', (req, res) => {
+    var code = req.params.bookingNo
+    mysqlDAO.getBook()
+        .then((result) => {
+            result.forEach(bookings => {
+                if (code == bookings.bookingNo) {            
+                    res.render('updateBook', { errors: undefined, bookingNo: code, bookingDate: bookings.bookingDate, name: bookings.name, quantity: bookings.quantity, bookedBy: bookings.bookedBy, phone: bookings.phone, tableNo: bookings.tableNo })
+                }
+            })
+        })
+})
+
+//POST update booking details
+app.post('/updateBook/:bookingNo',
+    [
+        //check bookingNo if edited, then error message display
+        check('bookingNo').custom((value, { req }) => {
+            console.log('code: ' + req.params.bookingNo + 'updated')
+
+            if (value !== req.params.bookingNo) {
+                throw new Error("Sorry cannot update booking number")
+            } else { return true }
+        }),
+        //check if input 
+        check('bookingDate').notEmpty().withMessage("Please fill in booking date"),
+        check('name').notEmpty().withMessage("Please fill in customer name"),
+        check('quantity').notEmpty().withMessage("Please fill in quantity of people"),
+        check('bookedBy').notEmpty().withMessage("Please fill in bookedBy"),
+        check('phone').notEmpty().withMessage("Please fill in phone number"),
+        check('tableNo').notEmpty().withMessage("Please fill in table number")
+    ],
+    (req, res) => {
+        var errors = validationResult(req)
+        if (!errors.isEmpty()) { //bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo
+            res.render('updateBook', { errors: errors.errors, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy, phone: req.body.phone, tableNo: req.body.tableNo})
+        } else {
+            mysqlDAO.updateBook(req.body.bookingDate, req.body.name, req.body.quantity, req.body.bookedBy,req.body.phone, req.body.tableNo, req.body.bookingNo)
+                .then((result) => {
+                    return res.redirect('/booking')
+                })
+                .catch((error) => {
+                    res.send(error)
+                    console.log(error)
+                    console.log("Error in edit booking page")
+                })
+        }
+    })
+
+//get add Supplier
+app.get('/addSup', (req, res) => { //sid, sname, product, dday, phoneNo
+    res.render("addSup", { errors: undefined, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo})
+})
+
+//post add Booking page
+app.post('/addSup',
+    [
+        //check sid input length
+        check('sid').isLength({ min: 1, max: 3 }).withMessage("Supplier Number must not exceed 3 characters or less than 1 character"),
+        //check sname if input 
+        check('sname').isLength({ min: 1 }).withMessage("Please enter Supplier Name"),
+        //check product if input 
+        check('product').isLength({ min: 1 }).withMessage("Please enter Product"),
+        //check dday if input 
+        check('dday').isLength({ min: 1 }).withMessage("Please enter Delivery Day"),
+         //check phoneNo if input 
+         check('phoneNo').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
+        //check id if exist
+        check('sid')
+            .exists()
+            .custom(async sid => {
+                const value = await mysqlDAO.isSidInUse(sid);
+                if (value) {
+                    throw new Error('Error: Supplier Number' + sid + ' is already exist')
+                }
+            })
+    ],
+    (req, res) => {
+        var errors = validationResult(req)
+        //error in add supplier page
+        if (!errors.isEmpty()) {
+            res.render("addSup", { errors: errors.errors })
+            console.log("Error in adding new Supplier details")
+          //  console.log(error)
+        }
+        else {
+            mysqlDAO.addSup(req.body.sid, req.body.sname, req.body.product, req.body.dday,  req.body.phoneNo)
+                .then((result) => {
+                    return res.redirect('/supplier')
+                })
+                .catch((error) => {
+                    res.send(error)
+                })
+        }
+    })
+
+//delete supplier data by selected id
+app.get('/deleteSup/:sid', (req, res) => {
+    mysqlDAO.deleteSup(req.params.sid)
+        .then((result) => {
+            return res.redirect('/supplier')
+        })
+        .catch((error) => {
+            res.send("<h3>ERROR: " + error.errno + " " + error.sqlMessage + "</h3>")
+            console.log('Error in deleting supplier data')
+        })
+})
+
+
+//GET to updating supplier details page
+app.get('/updateSup/:sid', (req, res) => {
+    var code = req.params.sid
+    mysqlDAO.getSup()
+        .then((result) => {
+            result.forEach(suppliers => {
+                if (code == suppliers.sid) { //sid, sname, product, dday, phoneNo
+                    res.render('updateSup', { errors: undefined, sid: code, sname: suppliers.sname, product: suppliers.product, dday: suppliers.dday, phoneNo: suppliers.phoneNo})
+                }
+            })
+        })
+})
+
+//POST update supplier details
+app.post('/updateSup/:sid',
+    [
+        //check sid if edited, then error message display
+        check('sid').custom((value, { req }) => {
+            console.log('code: ' + req.params.sid + 'updated')
+
+            if (value !== req.params.sid) {
+                throw new Error("Sorry cannot update Supplier number")
+            } else { return true }
+        }),
+
+        //check if input 
+        check('sname').notEmpty().withMessage("Please fill in Supplier name"),
+        check('product').notEmpty().withMessage("Please fill in Product"),
+        check('dday').notEmpty().withMessage("Please fill in Delivery Day"),
+        check('phoneNo').notEmpty().withMessage("Please fill in Phone number")
+    ],
+    (req, res) => { 
+        var errors = validationResult(req)
+        if (!errors.isEmpty()) { //sid, sname, product, dday, phoneNo
+            res.render('updateSup', { errors: errors.errors, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo})
+        } else {
+            mysqlDAO.updateSup(req.body.sname, req.body.product,  req.body.dday,req.body.phoneNo, req.body.sid)
+                .then((result) => {
+                    return res.redirect('/supplier')
+                })
+                .catch((error) => {
+                    res.send(error)
+                    console.log(error)
+                    console.log("Error in edit supplier page")
+                })
+        }
+    })
+
 //Listening on port 3000
 app.listen(3000, (err) => {
     if (err) console.error('Unable to connect the server: ', err);
-    console.log("Listening on port 3000");
+    console.log("Listening on port 3000");  
 })
 
 

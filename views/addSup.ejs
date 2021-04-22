@@ -1,0 +1,54 @@
+<html>
+<style>
+    textarea {
+        width: 500px;
+        height: 150px;
+    }
+
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Add Supplier</h1>
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+
+            <form action="/addSup" method="POST">
+                
+                <label>Supplier Id: </label>
+                <input type="number" name="sid"><br><br>
+
+                <label>Supplier Name: </label>
+                <input type="text" name="sname"><br><br>
+
+                <label>Product: </label>
+                <textarea name="product"></textarea><br><br>
+
+                <label>Delivery Day: </label>
+                <input type="text" name="dday" placeholder="Monday"><br><br>
+
+                <label>Phone Number: </label>
+                <input type="number" name="phoneNo"><br><br>
+
+                <input type="submit" value="Add">
+            </form>
+
+            <br><br>
+            <a href="/" class="button">HOME</a> </button>
+            <a href="/supplier" class="button">SUPPLIER</a> </button>
+</body>
+
+</html>

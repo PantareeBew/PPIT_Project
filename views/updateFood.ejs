@@ -1,0 +1,46 @@
+<style>
+    textarea {
+        width: 400px;
+        height: 150px;
+    }
+
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Edit Food Details</h1>
+
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+    <% } %>
+        
+        <form action="/updateFood/<%=fid%>" method="POST">
+            <label>Food Code: </label>
+            <input type="text" name="fid" value="<%=fid%>"><br><br>
+            <label>Food Name: </label>
+            <input type="text" name="fname" value="<%=fname%>"><br><br>
+            <label>Ingredients Details: </label>
+            <textarea name="ingredient"><%=ingredient%></textarea><br><br>
+            <label>Method: </label>
+            <textarea name="method"><%=method%></textarea><br><br>
+            <input type="submit" value="Update">
+            
+        </form> 
+        <br><br>
+    <a href="/" class="button">HOME</a> </button>
+    <a href="/food" class = "button">FOOD</a> </button><br><br>
+    
+
+
+</body>

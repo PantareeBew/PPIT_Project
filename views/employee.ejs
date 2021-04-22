@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        .button {
+            background-color: teal;
+            color:white;
+            padding: 15px 15px;
+            text-decoration: none;
+        }
+        h1{
+            color: palevioletred;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Employee Page</h1>
+    <table>
+        <tr>
+            <th>Employee Id</th>
+            <th>Fist Name</th>
+            <th>Last Name</th>
+            <th>Job</th>
+            <th>Hiredate</th>
+            <th>Salary</th>            
+            
+        </tr>
+        <% for(var i = 0; i <employees.length; i++) { %>
+            
+            <tr>
+                <td>
+                    <%= employees[i].Empno %>
+                </td>
+                <td>
+                    <%= employees[i].name %>
+                </td>
+                <td>
+                    <%= employees[i].lname %>
+                </td>
+                <td>
+                    <%= employees[i].job %>
+                </td>
+                <td>
+                    <%= employees[i].hiredate %>
+                </td>
+                <td>
+                    <%= employees[i].salary %>
+                </td>
+                
+                <td>
+                    <a href="/updateEmp/<%= employees[i].Empno%>">Update</a>
+                </td>
+                <td>
+                     <a href="/deleteEmp/<%= employees[i].Empno%>">Delete</a>
+                </td>
+ 
+            </tr>
+            <% } %>
+    </table>
+
+        <br><br>
+        <a href="/addEmp" class="button">ADD EMPLOYEE</a> </button>
+    <br><br><br><br>
+    <a href="/" class="button">HOME</a> </button>
+    
+</body>
+
+</html>

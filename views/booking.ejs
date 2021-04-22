@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        .button {
+            background-color: teal;
+            color: white;
+            padding: 15px 15px;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: palevioletred;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Booking Page</h1>
+    <table>
+        <tr>
+            <th>Booking Number</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Booked by</th>
+            <th>Phone</th>
+            <th>table Number</th>
+        </tr>
+        <% for(var i=0; i <bookings.length; i++) { %>
+            <tr>
+                <td>
+                    <%= bookings[i].bookingNo %>
+                </td>
+                <td>
+                    <%= bookings[i].bookingDate %>
+                </td>
+                <td>
+                    <%= bookings[i].name %>
+                </td>
+                <td>
+                    <%= bookings[i].quantity %>
+                </td>
+                <td>
+                    <%= bookings[i].bookedBy %>
+                </td>
+                <td>
+                    <%= bookings[i].phone %>
+                </td>
+                <td>
+                    <%= bookings[i].tableNo %>
+                </td>
+
+            </tr>
+            <% } %>
+    </table>
+    <br><br>
+    <a href="/addBook" class="button">ADD APPOINTMENT</a> </button>
+    <br><br><br><br>
+    <a href="/" class="button">HOME</a> </button>
+
+</body>
+
+</html>

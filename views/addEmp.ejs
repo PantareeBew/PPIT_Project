@@ -1,0 +1,49 @@
+<html>
+<style>
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+    .jobInput {
+        width: 350px;
+        height: 20px;
+    }
+</style>
+
+<body>
+    <h1>Add Employee</h1>
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+        <form action="/addEmp" method="POST">
+            <label>Employee Number: </label>
+            <input type="number" name="Empno"><br><br>
+            <label>Name: </label>
+            <input type="text" name="name"><br><br>
+            <label>Last Name: </label>
+            <input type="text" name="lname"><br><br>
+            <label>Job: </label>
+            <input type="text" name="job" placeholder="Manager','Waiter','Head_Chef','Chef','Kitchen_Porter', 'Cashier" class="jobInput"><br><br>
+            <label>Hiredate: </label>
+            <input type="date" name="hiredate"><br><br>
+            <label>Salary: </label>
+            <input type="number" name="salary"><br><br>
+            <input type="submit" value="Add">
+
+        </form>
+
+        <br><br>
+        <a href="/" class="button">HOME</a> </button>
+        <a href="/employee" class="button">Employee</a> </button>
+</body>
+
+</html>

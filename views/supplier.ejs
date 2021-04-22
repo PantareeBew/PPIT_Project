@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        .button {
+            background-color: teal;
+            color: white;
+            padding: 15px 15px;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: palevioletred;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Supplier Page</h1>
+    <table>
+        <tr>
+            <th>Supplier Id</th>
+            <th>Supplier Name</th>
+            <th>Delivery date</th>
+            <th>Phone Number</th>
+        </tr>
+        <% for(var i=0; i <suppliers.length; i++) { %>
+            <tr>
+                <td>
+                    <%= suppliers[i].sid %>
+                </td>
+                <td>
+                    <%= suppliers[i].sname %>
+                </td>
+                <td>
+                    <%= suppliers[i].dday %>
+                </td>
+                <td>
+                    <%= suppliers[i].phoneNo %>
+                </td>
+
+            </tr>
+            <% } %>
+    </table>
+    <a href="/addSup" class="button">ADD SSUPPILER</a> </button>
+    <br><br><br><br>
+    <br><br>
+    <a href="/" class="button">HOME</a> </button>
+</body>
+
+</html>

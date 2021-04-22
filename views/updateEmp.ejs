@@ -1,0 +1,51 @@
+<style>
+    textarea {
+        width: 400px;
+        height: 150px;
+    }
+
+    .button {
+        background-color: teal;
+        color: white;
+        padding: 15px 15px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <h1>Edit Employee Details</h1>
+
+    <% if (errors !=undefined) { %>
+        <ul>
+            <% errors.forEach((error)=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+    <% } %>
+        
+        <form action="/updateEmp/<%=Empno%>" method="POST">
+            <label>Employee Number: </label>
+            <input type="number" name="Empno" value="<%=Empno%>"><br><br>
+            <label>Employee Name: </label>
+            <input type="text" name="name" value="<%=name%>"><br><br>
+            <label>Employee Last Name: </label>
+            <input type="text" name="lname" value="<%=lname%>"><br><br>
+            <label>Job: </label>
+            <input type="text" name="job" value="<%=job%>"><br><br>
+            <label>Hiredate: </label> <!-- need to input value in everytime of updating-->
+            <input type="date" name="hiredate" value="<%=hiredate%>"><br><br>
+            <label>Salary: </label>
+            <input type="number" name="salary" value="<%=salary%>"><br><br>
+            
+            <input type="submit" value="Update">
+            
+        </form> 
+        <br><br>
+    <a href="/" class="button">HOME</a> </button>
+    <a href="/employee" class = "button">EMPLOYEE</a> </button><br><br>
+    
+
+
+</body>

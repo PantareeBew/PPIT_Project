@@ -7,7 +7,7 @@ mysql.createPool({
     connectionLimit: 3,
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '0865663393',
     database: 'PPit'
 })
     .then((result) => {

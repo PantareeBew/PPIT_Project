@@ -5,7 +5,6 @@ const { body, validationResult, check } = require('express-validator')
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.set('view engine', 'ejs')
-
 app.get('/', (req, res) => {
     res.render("home")
 })
@@ -15,6 +14,18 @@ app.get('/food', (req, res) => {
     mysqlDAO.getFood()
         .then((result) => {
             console.log("Food OK")
+            res.render('food', { foods: result })
+        })
+        .catch((error) => {
+            res.send(error)
+        })
+})//end get city
+
+//Get city details Page
+app.get('/food', (req, res) => {
+    mysqlDAO.getSearchFood()
+        .then((result) => {
+            console.log("Search Food OK")
             res.render('food', { foods: result })
         })
         .catch((error) => {
@@ -225,7 +236,7 @@ app.get('/updateEmp/:Empno', (req, res) => {
     mysqlDAO.getEmp()
         .then((result) => {
             result.forEach(employees => {
-                if (code == employees.Empno) {           
+                if (code == employees.Empno) {
                     res.render('updateEmp', { errors: undefined, Empno: code, name: employees.name, lname: employees.lname, job: employees.job, hiredate: employees.hiredate, salary: employees.salary })
                 }
             })
@@ -263,7 +274,7 @@ app.post('/updateEmp/:Empno',
 
 //get add Booking
 app.get('/addBook', (req, res) => {
-    res.render("addBook", { errors: undefined, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy,  phone: req.body.phone, tableNo: req.body.tableNo})
+    res.render("addBook", { errors: undefined, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy, phone: req.body.phone, tableNo: req.body.tableNo })
 })
 
 //post add Booking page
@@ -277,12 +288,12 @@ app.post('/addBook',
         check('name').isLength({ min: 1 }).withMessage("Please enter Name"),
         //check quantity if input 
         check('quantity').isLength({ min: 1 }).withMessage("Please enter quantity of people"),
-         //check bookedBy if input 
-         check('bookedBy').isLength({ min: 1 }).withMessage("Please choose way of booking"),
-         //check phone if input 
-         check('phone').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
-         //check tableNo if input 
-         check('tableNo').isLength({ min: 1, max: 3 }).withMessage("Please enter table number number"),
+        //check bookedBy if input 
+        check('bookedBy').isLength({ min: 1 }).withMessage("Please choose way of booking"),
+        //check phone if input 
+        check('phone').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
+        //check tableNo if input 
+        check('tableNo').isLength({ min: 1, max: 3 }).withMessage("Please enter table number number"),
         //check id if exist
         check('bookingNo')
             .exists()
@@ -299,7 +310,7 @@ app.post('/addBook',
         if (!errors.isEmpty()) {
             res.render("addBook", { errors: errors.errors })
             console.log("Error in adding new Booking details")
-          //  console.log(error)
+            //  console.log(error)
         }
         else {
             mysqlDAO.addBook(req.body.bookingNo, req.body.bookingDate, req.body.name, req.body.quantity, req.body.bookedBy, req.body.phone, req.body.tableNo)
@@ -331,7 +342,7 @@ app.get('/updateBook/:bookingNo', (req, res) => {
     mysqlDAO.getBook()
         .then((result) => {
             result.forEach(bookings => {
-                if (code == bookings.bookingNo) {            
+                if (code == bookings.bookingNo) {
                     res.render('updateBook', { errors: undefined, bookingNo: code, bookingDate: bookings.bookingDate, name: bookings.name, quantity: bookings.quantity, bookedBy: bookings.bookedBy, phone: bookings.phone, tableNo: bookings.tableNo })
                 }
             })
@@ -360,9 +371,9 @@ app.post('/updateBook/:bookingNo',
     (req, res) => {
         var errors = validationResult(req)
         if (!errors.isEmpty()) { //bookingNo, bookingDate, name, quantity, bookedBy, phone, tableNo
-            res.render('updateBook', { errors: errors.errors, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy, phone: req.body.phone, tableNo: req.body.tableNo})
+            res.render('updateBook', { errors: errors.errors, bookingNo: req.body.bookingNo, bookingDate: req.body.bookingDate, name: req.body.name, quantity: req.body.quantity, bookedBy: req.body.bookedBy, phone: req.body.phone, tableNo: req.body.tableNo })
         } else {
-            mysqlDAO.updateBook(req.body.bookingDate, req.body.name, req.body.quantity, req.body.bookedBy,req.body.phone, req.body.tableNo, req.body.bookingNo)
+            mysqlDAO.updateBook(req.body.bookingDate, req.body.name, req.body.quantity, req.body.bookedBy, req.body.phone, req.body.tableNo, req.body.bookingNo)
                 .then((result) => {
                     return res.redirect('/booking')
                 })
@@ -376,7 +387,7 @@ app.post('/updateBook/:bookingNo',
 
 //get add Supplier
 app.get('/addSup', (req, res) => { //sid, sname, product, dday, phoneNo
-    res.render("addSup", { errors: undefined, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo})
+    res.render("addSup", { errors: undefined, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo })
 })
 
 //post add Booking page
@@ -390,8 +401,8 @@ app.post('/addSup',
         check('product').isLength({ min: 1 }).withMessage("Please enter Product"),
         //check dday if input 
         check('dday').isLength({ min: 1 }).withMessage("Please enter Delivery Day"),
-         //check phoneNo if input 
-         check('phoneNo').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
+        //check phoneNo if input 
+        check('phoneNo').isLength({ min: 1, max: 10 }).withMessage("Please enter phone number"),
         //check id if exist
         check('sid')
             .exists()
@@ -408,10 +419,10 @@ app.post('/addSup',
         if (!errors.isEmpty()) {
             res.render("addSup", { errors: errors.errors })
             console.log("Error in adding new Supplier details")
-          //  console.log(error)
+            //  console.log(error)
         }
         else {
-            mysqlDAO.addSup(req.body.sid, req.body.sname, req.body.product, req.body.dday,  req.body.phoneNo)
+            mysqlDAO.addSup(req.body.sid, req.body.sname, req.body.product, req.body.dday, req.body.phoneNo)
                 .then((result) => {
                     return res.redirect('/supplier')
                 })
@@ -441,7 +452,7 @@ app.get('/updateSup/:sid', (req, res) => {
         .then((result) => {
             result.forEach(suppliers => {
                 if (code == suppliers.sid) { //sid, sname, product, dday, phoneNo
-                    res.render('updateSup', { errors: undefined, sid: code, sname: suppliers.sname, product: suppliers.product, dday: suppliers.dday, phoneNo: suppliers.phoneNo})
+                    res.render('updateSup', { errors: undefined, sid: code, sname: suppliers.sname, product: suppliers.product, dday: suppliers.dday, phoneNo: suppliers.phoneNo })
                 }
             })
         })
@@ -465,12 +476,12 @@ app.post('/updateSup/:sid',
         check('dday').notEmpty().withMessage("Please fill in Delivery Day"),
         check('phoneNo').notEmpty().withMessage("Please fill in Phone number")
     ],
-    (req, res) => { 
+    (req, res) => {
         var errors = validationResult(req)
         if (!errors.isEmpty()) { //sid, sname, product, dday, phoneNo
-            res.render('updateSup', { errors: errors.errors, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo})
+            res.render('updateSup', { errors: errors.errors, sid: req.body.sid, sname: req.body.sname, product: req.body.product, dday: req.body.dday, phoneNo: req.body.phoneNo })
         } else {
-            mysqlDAO.updateSup(req.body.sname, req.body.product,  req.body.dday,req.body.phoneNo, req.body.sid)
+            mysqlDAO.updateSup(req.body.sname, req.body.product, req.body.dday, req.body.phoneNo, req.body.sid)
                 .then((result) => {
                     return res.redirect('/supplier')
                 })
@@ -485,7 +496,7 @@ app.post('/updateSup/:sid',
 //Listening on port 3000
 app.listen(3000, (err) => {
     if (err) console.error('Unable to connect the server: ', err);
-    console.log("Listening on port 3000");  
+    console.log("Listening on port 3000");
 })
 
 

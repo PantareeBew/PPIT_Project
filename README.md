@@ -7,6 +7,7 @@ Show databases;
 create database PPit CHARACTER SET utf8 COLLATE UTF8_GENERAL_CI ;
 Use PPit;
 Show tables;
+___
 
 --Food table
 Drop table if exists food;
@@ -19,7 +20,7 @@ ingredient varchar(1000) NOT NULL,
 method varchar(2000) NOT NULL,
 PRIMARY KEY (fid)
 );
-
+___
 
 select * from food;
 Insert into food (fid,fname,ingredient,method) values 
@@ -130,7 +131,7 @@ good handful of basil leaves
 9.Scatter with lime to garnish and serve immediately with boiled rice.
 ');
 
-
+___
 --Supplier
 Drop table if exists supplier;
 create table supplier (
@@ -139,10 +140,10 @@ sname varchar(45) NOT NULL, -- maximum column length is 45 characters
 product varchar(200) NOT NULL,
 dday ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') ,
 phoneNo int(10) zerofill NOT NULL,
-
 PRIMARY KEY (sid)
 );
 
+___
 select * from supplier;
 Insert into supplier (sid,sname,product,dday,phoneNo) values 
 (1,'Corrib Food Product','Chicken, Duck', 'Thursday', 0818227000),
@@ -150,8 +151,7 @@ Insert into supplier (sid,sname,product,dday,phoneNo) values
 (3,'Jasmine', 'Chili, Lemongrass, Galangal, Ginger, Egg, Tofu', 'Wednesday', 0910539912),
 (4,'Collerans Butchers', 'Beef, Pork', 'Friday', 0917795931);
 
---ENUM ('Manager','Waiter','Head_Chef','Chef','Kitchen_Porter', 'Cashier'),
---Employee
+___
 Drop table if exists employee;
 create table employee (
 Empno Int(3) zerofill, -- see Numbers.sql next week
@@ -162,7 +162,7 @@ hiredate date not null,
 salary int(10) NOT NULL,
 PRIMARY KEY (Empno)
 );
-
+___
 select * from employee;
 Insert into employee (Empno,name,lname, job, hiredate, salary) values 
 (101,'Brian', 'Waldron', 'Manager', '2015-09-16', 2500),
@@ -174,6 +174,7 @@ Insert into employee (Empno,name,lname, job, hiredate, salary) values
 (107,'Shawn', 'Mendes', 'Waiter', '2019-03-02', 1800),
 (108,'James', 'Boyle', 'Kitchen_Porter', '2019-07-19', 1600);
 
+___
 --Booking
 Drop table if exists booking;
 create table booking (
@@ -188,7 +189,7 @@ tableNo int(20) NOT NULL,
 PRIMARY KEY (bookingNo)
 )auto_increment=1 ;
 
-
+___
 select * from booking;
 Insert into booking (bookingNo,bookingDate,name, quantity, bookedBy, phone, tableNo) values 
 (1,'2021-03-08', 'John', 4, 'Email', 0906625460, 9),
